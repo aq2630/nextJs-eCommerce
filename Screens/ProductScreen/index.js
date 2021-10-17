@@ -6,7 +6,6 @@ import {
   Container,
   Grid,
   IconButton,
-  imageListItemBarClasses,
   TextField,
   Typography,
 } from "@mui/material";
@@ -27,7 +26,7 @@ const ProductScreen = () => {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
-  const [qty, setQty] = useState(1);
+  const [quantity, setQuantity] = useState(1);
   const sliderMain = useRef(null);
   const sliderThumb = useRef(null);
   const router = useRouter();
@@ -54,12 +53,40 @@ const ProductScreen = () => {
   };
 
   const isDisabled =
-    name === "" || email === "" || phone === "" || address === "" || qty === "";
+    name === "" ||
+    email === "" ||
+    phone === "" ||
+    address === "" ||
+    quantity === "";
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
-    // router.push("/ordersuccess/123");
-    console.log("Submit Handler");
+    const order = {
+      name,
+      email,
+      phone,
+      quantity,
+      address,
+      product: {
+        title: product.title,
+        productId: product._id,
+      },
+    };
+    await fetch(`/api/addorder`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(order),
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        router.push({
+          pathname: `/ordersuccess/${data._id}`,
+        });
+      });
   };
 
   useEffect(() => {
@@ -180,14 +207,16 @@ const ProductScreen = () => {
                       <Typography variant="h6">Quantity</Typography>
                       <IconButton
                         className={classes.IconButton}
-                        onClick={() => (qty === 1 ? 1 : setQty(qty - 1))}
+                        onClick={() =>
+                          quantity === 1 ? 1 : setQuantity(quantity - 1)
+                        }
                       >
                         <RemoveCircleIcon />
                       </IconButton>
-                      {qty}
+                      {quantity}
                       <IconButton
                         className={classes.IconButton}
-                        onClick={() => setQty(qty + 1)}
+                        onClick={() => setQuantity(quantity + 1)}
                       >
                         <AddCircleIcon />
                       </IconButton>

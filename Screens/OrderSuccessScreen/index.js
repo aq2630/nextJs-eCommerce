@@ -1,25 +1,22 @@
 import React, { useState, useEffect } from "react";
-import {
-  Box,
-  Container,
-  Grid,
-  CircularProgress,
-  Typography,
-} from "@mui/material";
+import { Box, Container, CircularProgress, Typography } from "@mui/material";
+import { withRouter } from "next/router";
 import { useStyles } from "./OrderSuccessScreen.style.js";
 
-const OrderSuccess = ({ match }) => {
+const OrderSuccess = ({ router }) => {
   const [order, setOrder] = useState(null);
-  3;
   const classes = useStyles();
 
-  const getOrder = async () => {
-    // get order login
+  const getOrderDetails = async () => {
+    const getOrder = await (
+      await fetch(`/api/order/${router.query.id}`)
+    ).json();
+    setOrder(getOrder);
   };
 
   useEffect(() => {
-    getOrder();
-  }, []);
+    getOrderDetails();
+  }, [router.query.id]);
 
   return (
     <Container max-width="lg" className={classes.mainContainer}>
@@ -29,25 +26,25 @@ const OrderSuccess = ({ match }) => {
         </Box>
       ) : (
         <Box>
-          {/* <Typography variant="h5" paragraph={true}>
+          <Typography variant="h5" paragraph={true}>
             Dear {order.name}
           </Typography>
           <Typography variant="body1" paragraph={true}>
             Thank you for shopping from Hashtagstore.{" "}
           </Typography>
           <Typography variant="body1" paragraph={true}>
-            Your order of <b>{order.productTitle}</b> has been placed.
+            Your order of <b>{order.product.title}</b> has been placed.
           </Typography>
           <Typography variant="body1">
             Your will receive a confirmation call within 24 hours.
           </Typography>
           <Typography variant="body1">
             Your order will be deliver between 3 to 5 days after confirmation.
-          </Typography> */}
+          </Typography>
         </Box>
       )}
     </Container>
   );
 };
 
-export default OrderSuccess;
+export default withRouter(OrderSuccess);

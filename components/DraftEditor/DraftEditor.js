@@ -20,7 +20,7 @@ class DraftEditor extends React.Component {
     this.onChange = (editorState) => {
       this.setState({ editorState });
 
-      const contentState = editorState.getCurrentContent();
+      const contentState = editorState?.getCurrentContent();
       const toRaw = convertToRaw(contentState);
       const fromRaw = convertFromRaw(toRaw);
       const finalContent = EditorState.createWithContent(fromRaw);
@@ -73,7 +73,7 @@ class DraftEditor extends React.Component {
     // If the user changes block type before entering any text, we can
     // either style the placeholder or hide it. Let's just hide it now.
     let className = "RichEditor-editor";
-    var contentState = editorState.getCurrentContent();
+    var contentState = editorState?.getCurrentContent();
     if (!contentState.hasText()) {
       if (contentState.getBlockMap().first().getType() !== "unstyled") {
         className += " RichEditor-hidePlaceholder";
