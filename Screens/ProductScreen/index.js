@@ -58,6 +58,7 @@ const ProductScreen = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
+    // router.push("/ordersuccess/123");
     console.log("Submit Handler");
   };
 
@@ -208,6 +209,7 @@ const ProductScreen = () => {
                     className={classes.placeOrderButton}
                     disabled={isDisabled}
                     variant="contained"
+                    type="submit"
                   >
                     Place Order
                   </Button>
