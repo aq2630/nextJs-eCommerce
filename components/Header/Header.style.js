@@ -1,6 +1,9 @@
 import { makeStyles } from "@mui/styles";
 
 export const useStyles = makeStyles((theme) => ({
+  root: {
+    marginBottom: theme.spacing(11),
+  },
   toolbar_wrapper: {
     display: "flex",
     justifyContent: "flex-end",
