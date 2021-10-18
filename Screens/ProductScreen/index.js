@@ -93,7 +93,7 @@ const ProductScreen = () => {
     if (router && router.query) {
       getSingleProduct(router.query.id);
     }
-  }, [router]);
+  }, [router.query.id]);
 
   useEffect(() => {
     if (product) {
