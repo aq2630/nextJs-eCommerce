@@ -1,4 +1,7 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import { createEditor, Descendant, Element } from "slate";
+import { Slate, Editable, withReact } from "slate-react";
+import { useSelector, useDispatch } from "react-redux";
 import {
   Box,
   Button,
@@ -9,17 +12,32 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { Editor, EditorState, convertFromRaw } from "draft-js";
+import Editor from "../../components/DraftEditor/DraftEditor";
+// import { Editor, EditorState, convertFromRaw } from "draft-js";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
-import { ProductContext } from "../../context/ProductsContext";
+import { fetchProductById } from "../../redux/products";
 import { useStyles } from "./ProductScreen.style";
 import Slider from "react-slick";
 
+const initialValue = [
+  {
+    type: "paragraph",
+    children: [
+      {
+        text: "loading...",
+      },
+    ],
+  },
+];
+
 const ProductScreen = () => {
-  const { product, getSingleProduct } = useContext(ProductContext);
+  const { product, loading } = useSelector((state) => state.products);
+  const [value, setValue] = useState(initialValue);
+  const editor = useMemo(() => withReact(createEditor()), []);
+  const dispatch = useDispatch();
   const [editorState, setEditorState] = useState(null);
   const [submit, setSubmit] = useState(false);
   const [name, setName] = useState("");
@@ -47,7 +65,7 @@ const ProductScreen = () => {
     infinite: true,
     asNavFor: sliderMain.current,
     speed: 500,
-    slidesToShow: product && product.image.length === 2 ? 2 : 3,
+    slidesToShow: product && product?.image.length === 2 ? 2 : 3,
     slidesToScroll: 1,
     focusOnSelect: true,
   };
@@ -91,21 +109,9 @@ const ProductScreen = () => {
 
   useEffect(() => {
     if (router && router.query) {
-      getSingleProduct(router.query.id);
+      dispatch(fetchProductById(router.query.id));
     }
   }, [router.query.id]);
-
-  useEffect(() => {
-    if (product) {
-      setEditorState(
-        EditorState.createWithContent(
-          convertFromRaw(JSON.parse(product.description))
-        )
-      );
-    } else {
-      setEditorState(EditorState.createWithContent(emptyContentState));
-    }
-  }, [product]);
 
   return (
     <Box className={classes.root}>
@@ -253,7 +259,15 @@ const ProductScreen = () => {
             <Grid item md={12} className={classes.descriptionContainer}>
               <Typography variant="h5">Product Description</Typography>
               <Box className={classes.description}>
-                <Editor editorState={editorState} readOnly={true} />
+                <Slate
+                  editor={editor}
+                  value={value}
+                  onChange={(value) => setValue(value)}
+                >
+                  <Editable readOnly placeholder="Enter some plain text..." />
+                </Slate>
+                {/* <Editor placeholder={"Write something..."} /> */}
+                {/* <Editor editorState={editorState} readOnly={true} /> */}
               </Box>
             </Grid>
           </Grid>
@@ -264,15 +278,3 @@ const ProductScreen = () => {
 };
 
 export default ProductScreen;
-
-const emptyContentState = convertFromRaw({
-  entityMap: {},
-  blocks: [
-    {
-      text: "",
-      key: "foo",
-      type: "unstyled",
-      entityRanges: [],
-    },
-  ],
-});

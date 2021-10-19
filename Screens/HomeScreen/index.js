@@ -1,26 +1,26 @@
 import React, { useContext, useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import Head from "next/head";
 import Image from "next/image";
 import { Box, CircularProgress, Container, Grid } from "@mui/material";
 import Hero from "../../components/Hero/Hero";
 import ProductCard from "../../components/ProductCard/ProductCard";
-import { ProductContext } from "../../context/ProductsContext";
+import { fetchProducts } from "../../redux/products";
 import styles from "../../styles/Home.module.css";
 
 const HomeScreen = () => {
+  const { products, loading } = useSelector((state) => state.products);
+  const dispatch = useDispatch();
   // const [products, setProducts] = useState([]);
-  const { products, getAllProducts } = useContext(ProductContext);
 
   // const getAllProducts = async () => {
-  //   const allproducts = await (await fetch("/api/products")).json();
-  //   setProducts(allproducts);
+  //   const data = await (await fetch("/api/products")).json();
+  //   dispatch(get)
   // };
 
   useEffect(() => {
-    getAllProducts("/api/products");
-  }, []);
-
-  console.log(products);
+    dispatch(fetchProducts());
+  }, [dispatch]);
 
   return (
     <div className={styles.container}>
@@ -34,7 +34,7 @@ const HomeScreen = () => {
         <Hero />
         <Container maxWidth="lg">
           <Grid container>
-            {products.length === 0 ? (
+            {products?.length === 0 ? (
               <Box
                 sx={{
                   display: "flex",

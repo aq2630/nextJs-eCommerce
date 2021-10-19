@@ -9,14 +9,17 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/css": "^11.5.0",
     "@emotion/react": "^11.4.1",
     "@emotion/styled": "^11.3.0",
     "@mui/icons-material": "^5.0.3",
     "@mui/material": "^5.0.3",
     "@mui/styles": "^5.0.1",
+    "@reduxjs/toolkit": "^1.6.2",
     "bcryptjs": "^2.4.3",
     "cloudinary": "^1.27.1",
-    "draft-js": "^0.11.7",
+    "emotion": "^11.0.0",
+    "is-hotkey": "^0.2.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.0.10",
     "next": "11.1.2",
@@ -24,7 +27,11 @@
     "prop-types": "^15.7.2",
     "react": "17.0.2",
     "react-dom": "17.0.2",
-    "react-slick": "^0.28.1"
+    "react-redux": "^7.2.5",
+    "react-slick": "^0.28.1",
+    "slate": "^0.66.5",
+    "slate-history": "^0.66.0",
+    "slate-react": "^0.66.7"
   },
   "devDependencies": {
     "autoprefixer": "^10.3.7",
