@@ -87,6 +87,9 @@ export const useStyles = makeStyles((theme) => ({
       margin: theme.spacing(0),
     },
   },
+  editorToolbar: {
+    display: "none",
+  },
   thankYouMessage: {
     [theme.breakpoints.up("md")]: {
       fontSize: "1.5rem",

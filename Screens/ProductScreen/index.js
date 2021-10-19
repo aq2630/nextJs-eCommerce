@@ -1,6 +1,5 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
-import { createEditor, Descendant, Element } from "slate";
-import { Slate, Editable, withReact } from "slate-react";
+import React, { useEffect, useRef, useState } from "react";
+import dynamic from "next/dynamic";
 import { useSelector, useDispatch } from "react-redux";
 import {
   Box,
@@ -12,8 +11,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import Editor from "../../components/DraftEditor/DraftEditor";
-// import { Editor, EditorState, convertFromRaw } from "draft-js";
+import { EditorState, convertFromRaw, convertToRaw } from "draft-js";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
@@ -22,23 +20,17 @@ import { fetchProductById } from "../../redux/products";
 import { useStyles } from "./ProductScreen.style";
 import Slider from "react-slick";
 
-const initialValue = [
+const Editor = dynamic(
+  () => import("draft-js").then((module) => module.Editor),
   {
-    type: "paragraph",
-    children: [
-      {
-        text: "loading...",
-      },
-    ],
-  },
-];
+    ssr: false,
+  }
+);
 
 const ProductScreen = () => {
   const { product, loading } = useSelector((state) => state.products);
-  const [value, setValue] = useState(initialValue);
-  const editor = useMemo(() => withReact(createEditor()), []);
-  const dispatch = useDispatch();
   const [editorState, setEditorState] = useState(null);
+  const dispatch = useDispatch();
   const [submit, setSubmit] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -112,6 +104,20 @@ const ProductScreen = () => {
       dispatch(fetchProductById(router.query.id));
     }
   }, [router.query.id]);
+
+  useEffect(() => {
+    if (product) {
+      setEditorState(
+        EditorState.createWithContent(
+          convertFromRaw(JSON.parse(product.description))
+        )
+      );
+    } else {
+      setEditorState(EditorState.createEmpty());
+    }
+  }, [product]);
+
+  editorState && console.log(editorState.getCurrentContent());
 
   return (
     <Box className={classes.root}>
@@ -259,15 +265,9 @@ const ProductScreen = () => {
             <Grid item md={12} className={classes.descriptionContainer}>
               <Typography variant="h5">Product Description</Typography>
               <Box className={classes.description}>
-                <Slate
-                  editor={editor}
-                  value={value}
-                  onChange={(value) => setValue(value)}
-                >
-                  <Editable readOnly placeholder="Enter some plain text..." />
-                </Slate>
-                {/* <Editor placeholder={"Write something..."} /> */}
-                {/* <Editor editorState={editorState} readOnly={true} /> */}
+                {editorState && (
+                  <Editor editorState={editorState} readOnly={true} />
+                )}
               </Box>
             </Grid>
           </Grid>
