@@ -14,7 +14,7 @@ class DraftEditor extends React.Component {
     super(props);
     this.state = { editorState: EditorState.createEmpty() };
 
-    this.focus = () => this.refs.editor.focus();
+    this.focus = () => this.editor.focus();
     this.onChange = (editorState) => {
       this.setState({ editorState });
       const contentState = editorState.getCurrentContent();
@@ -96,7 +96,9 @@ class DraftEditor extends React.Component {
             keyBindingFn={this.mapKeyToEditorCommand}
             onChange={this.onChange}
             placeholder="Product Description"
-            ref="editor"
+            ref={(c) => {
+              this.editor = c;
+            }}
             spellCheck={true}
           />
         </div>
