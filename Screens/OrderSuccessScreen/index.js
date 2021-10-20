@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Box, Container, CircularProgress, Typography } from "@mui/material";
 import { withRouter } from "next/router";
 import { useStyles } from "./OrderSuccessScreen.style.js";
+import * as fbq from "../../utils/fpixel";
 
 const OrderSuccess = ({ router }) => {
   const [order, setOrder] = useState(null);
@@ -16,6 +17,10 @@ const OrderSuccess = ({ router }) => {
 
   useEffect(() => {
     getOrderDetails();
+    if (order) {
+      fbq.event("Purchase", { currency: "PKR", name: order.product.title });
+    }
+    console.log(fbq.event);
   }, [router.query.id]);
 
   return (

@@ -8,15 +8,9 @@ import ProductCard from "../../components/ProductCard/ProductCard";
 import { fetchProducts } from "../../redux/products";
 import styles from "../../styles/Home.module.css";
 
-const HomeScreen = () => {
+const HomeScreen = ({ data }) => {
   const { products, loading } = useSelector((state) => state.products);
   const dispatch = useDispatch();
-  // const [products, setProducts] = useState([]);
-
-  // const getAllProducts = async () => {
-  //   const data = await (await fetch("/api/products")).json();
-  //   dispatch(get)
-  // };
 
   useEffect(() => {
     dispatch(fetchProducts());
