@@ -68,7 +68,6 @@ const AddProductScreen = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-
     const userInfoFromStorage = localStorage.getItem("userInfo")
       ? JSON.parse(localStorage.getItem("userInfo"))
       : null;
