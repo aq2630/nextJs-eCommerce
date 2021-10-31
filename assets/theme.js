@@ -9,6 +9,10 @@ const theme = responsiveFontSizes(
       secondary: {
         main: "#000",
       },
+      gray: {
+        100: "#F3F4F6",
+        700: "#374151",
+      },
     },
   })
 );

@@ -24,7 +24,7 @@ function MyApp({ Component, pageProps }) {
       router.events.off("routeChangeComplete", handleRouteChange);
     };
   }, [router.events]);
-  console.log(fbq.FB_PIXEL_ID);
+
   return (
     <>
       {/* Global Site Code Pixel - Facebook Pixel */}

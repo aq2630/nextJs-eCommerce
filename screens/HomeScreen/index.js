@@ -7,9 +7,11 @@ import Hero from "../../components/Hero/Hero";
 import ProductCard from "../../components/ProductCard/ProductCard";
 import { fetchProducts } from "../../redux/products";
 import styles from "../../styles/Home.module.css";
+import { useStyles } from "./HomeScreen.style";
 
 const HomeScreen = ({ data }) => {
   const { products, loading } = useSelector((state) => state.products);
+  const classes = useStyles();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -26,7 +28,7 @@ const HomeScreen = ({ data }) => {
 
       <main className={styles.main}>
         <Hero />
-        <Container maxWidth="lg">
+        <Container maxWidth="lg" className={classes.productsContainer}>
           <Grid container>
             {products?.length === 0 ? (
               <Box
@@ -38,17 +40,23 @@ const HomeScreen = ({ data }) => {
                 <CircularProgress color="primary" />
               </Box>
             ) : (
-              products.map((product, index) => (
-                <Grid key={`products-${index}`} item md={3}>
-                  <ProductCard product={product} />
-                </Grid>
-              ))
+              <>
+                {products.map((product, index) => (
+                  <Grid
+                    className={classes.gridItem}
+                    item
+                    md={3}
+                    xs={6}
+                    key={`products-${index}`}
+                  >
+                    <ProductCard product={product} />
+                  </Grid>
+                ))}
+              </>
             )}
           </Grid>
         </Container>
       </main>
-
-      <footer className={styles.footer}></footer>
     </div>
   );
 };
