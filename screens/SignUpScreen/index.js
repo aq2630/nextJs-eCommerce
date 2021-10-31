@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { Box, Button, Container, TextField } from "@mui/material";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useStyles } from "./LoginScreen.style";
+import { useStyles } from "./SignUpScreen.style";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
-const AddProductScreen = () => {
+const SignUpScreen = () => {
   const router = useRouter();
   const classes = useStyles();
   const [email, setEmail] = useState("");
@@ -75,4 +75,4 @@ const AddProductScreen = () => {
   );
 };
 
-export default AddProductScreen;
+export default SignUpScreen;

@@ -27,6 +27,7 @@ export const useStyles = makeStyles((theme) => ({
     "& li": {
       padding: theme.spacing(0.5),
       color: "#ED1C24",
+      fontWeight: "bold",
       listStyleType: "none",
       [theme.breakpoints.up("md")]: {
         padding: theme.spacing(2),

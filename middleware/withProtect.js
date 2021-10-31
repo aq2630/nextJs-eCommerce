@@ -1,36 +1,15 @@
-import jwt from "jsonwebtoken";
-import User from "../models/userModel";
-import connectDb from "../utils/dbConnect";
-
-connectDb();
+import { getSession } from "next-auth/client";
 
 const withProtect = (handler) => {
   return async (req, res) => {
-    // Get token and check if it exists
-    let token;
+    const session = await getSession({ req: req });
 
-    if (
-      req.headers.authorization &&
-      req.headers.authorization.startsWith("Bearer")
-    ) {
-      token = req.headers.authorization.split(" ")[1];
-      console.log(token);
-    }
-
-    if (!token) {
+    if (!session) {
       return res.status(401).json({
-        message: "Please log in to get access.",
+        message: "Not Authenticated.",
       });
     }
-
-    try {
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      req.user = await User.findById(decoded.id);
-      return handler(req, res);
-    } catch (error) {
-      console.log("catch error", error);
-      res.status(401).json({ message: "Token Failed" });
-    }
+    return handler(req, res);
   };
 };
 

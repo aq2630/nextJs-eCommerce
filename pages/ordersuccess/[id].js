@@ -1,5 +1,5 @@
 import React from "react";
-import OrderSuccessScreen from "../../Screens/OrderSuccessScreen";
+import OrderSuccessScreen from "../../screens/OrderSuccessScreen";
 
 const OrderSuccess = () => {
   return <OrderSuccessScreen />;

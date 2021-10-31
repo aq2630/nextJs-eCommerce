@@ -17,10 +17,8 @@ const OrderSuccess = ({ router }) => {
 
   useEffect(() => {
     getOrderDetails();
-    if (order) {
-      fbq.event("Purchase", { currency: "PKR", name: order.product.title });
-    }
-    console.log(fbq.event);
+    fbq.event("Purchase", { currency: "PKR", value: 10 });
+    console.log(fbq);
   }, [router.query.id]);
 
   return (

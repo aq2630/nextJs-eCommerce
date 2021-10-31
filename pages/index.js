@@ -1,5 +1,5 @@
 import React from "react";
-import HomeScreen from "../Screens/HomeScreen";
+import HomeScreen from "../screens/HomeScreen";
 
 const Home = ({ data }) => {
   return <HomeScreen data={data} />;
